@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Draw</title>
+</head>
+<body>
+    <h1>Random Meal Assignment</h1>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <button onclick="draw()">Draw</button>
+    <p id="resultText"></p>
+
+    <script>
+        let counts = {Starter: 0, "Main course": 0, Dessert: 0};
+
+        function draw() {
+            let name = document.getElementById('nameInput').value;
+            if (name === "") {
+                alert("Please enter your name");
+                return;
+            }
+
+            let options = ["Starter", "Main course", "Dessert"];
+            let choiceIndex = Math.floor(Math.random() * options.length);
+            let result = options[choiceIndex];
+
+            // Check if the result has been chosen less than 2 times
+            if (counts[result] < 2) {
+                counts[result]++;
+                document.getElementById('resultText').innerText = "Hey " + name + ", you have to take care of " + result;
+            } else {
+                // Find an alternative option
+                let availableOptions = options.filter(option => counts[option] < 2);
+                if (availableOptions.length > 0) {
+                    result = availableOptions[Math.floor(Math.random() * availableOptions.length)];
+                    counts[result]++;
+                    document.getElementById('resultText').innerText = "Hey " + name + ", you have to take care of " + result;
+                } else {
+                    document.getElementById('resultText').innerText = "All options are fully assigned. Try resetting.";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
